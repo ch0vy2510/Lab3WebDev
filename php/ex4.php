@@ -1,62 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Prime Number Checker</title>
+    <title>Factorial Calculator</title>
 </head>
 <body>
-    <h1>Prime Number Checker</h1>
-    <form method="post" action="" onsubmit="return validateForm()">
+    <h1>Factorial Calculator</h1>
+    <form method="post" action="">
         <label for="number">Enter a positive integer:</label>
-        <input type="text" id="number" name="number" required>
-        <input type="submit" value="Check">
+        <input type="number" id="number" name="number" required min="0">
+        <input type="submit" value="Calculate Factorial">
     </form>
 
     <?php
-    function isPrime($n) {
-        if ($n <= 1) {
-            return false;
+    function calculateFactorial($n) {
+        if ($n == 0 || $n == 1) {
+            return 1; 
+        } else {
+            return $n * calculateFactorial($n - 1);
         }
-
-        for ($i = 2; $i <= sqrt($n); $i++) {
-            if ($n % $i == 0) {
-                return false;
-            }
-        }
-
-        return true;
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $number = $_POST["number"];
-        
-        // Check if input is a positive integer
-        if (ctype_digit($number) && $number > 0) {
-            if (isPrime(intval($number))) {
-                echo "$number is a prime number.";
-            } else {
-                echo "$number is not a prime number.";
-            }
-        } else {
-            echo "Please enter a positive integer.";
+        $number = intval($_POST["number"]);
+        $factorial = 1;
+
+        if ($number < 0) {
+            echo "Factorial is not defined for negative numbers.";
+        } elseif ($number > 1) {
+            $factorial = calculateFactorial($number);
         }
+
+        echo "The factorial of $number is $factorial";
     }
     ?>
-
-    <script>
-        function validateForm() {
-            var numberInput = document.getElementById("number");
-            var numberValue = numberInput.value;
-            
-            // Check if the input is a positive integer using a regular expression
-            var pattern = /^[1-9]\d*$/;
-            if (!pattern.test(numberValue)) {
-                alert("Please enter a positive integer.");
-                numberInput.focus();
-                return false;
-            }
-            
-            return true;
-        }
-    </script>
 </body>
 </html>
+
+
+   
