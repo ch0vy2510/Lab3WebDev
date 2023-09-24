@@ -1,39 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Factorial Calculator</title>
+    <title>Prime Number Checker</title>
 </head>
 <body>
-    <h1>Factorial Calculator</h1>
+    <h1>Prime Number Checker</h1>
     <form method="post" action="">
         <label for="number">Enter a positive integer:</label>
-        <!-- Add inputmode and pattern attributes -->
-        <input type="text" id="number" name="number" required inputmode="numeric" pattern="[0-9]*">
-        <input type="submit" value="Calculate Factorial">
+        <input type="number" id="number" name="number" required min="1">
+        <input type="submit" value="Check">
     </form>
 
     <?php
-    function calculateFactorial($n) {
-        if ($n < 0) {
-            return "Factorial is not defined for negative numbers.";
-        } elseif ($n == 0 || $n == 1) {
-            return 1; // Factorial of 0 and 1 is 1
-        } else {
-            return $n * calculateFactorial($n - 1);
+    function isPrime($n) {
+        if ($n <= 1) {
+            return false;
         }
+
+        for ($i = 2; $i <= sqrt($n); $i++) {
+            if ($n % $i == 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $number = intval($_POST["number"]);
-        if ($number < 0) {
-            echo "Factorial is not defined for negative numbers.";
+        $number = $_POST["number"];
+        
+        if (is_numeric($number) && $number > 0) {
+            if (isPrime(intval($number))) {
+                echo "$number is a prime number.";
+            } else {
+                echo "$number is not a prime number.";
+            }
         } else {
-            $factorial = calculateFactorial($number);
-            echo "The factorial of $number is $factorial";
+            echo "Please enter a positive integer.";
         }
     }
     ?>
 </body>
 </html>
+
 
 
